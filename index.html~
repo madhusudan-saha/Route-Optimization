@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Shortest Path</title>
+<script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+<style>
+  div {
+  overflow: hidden;
+  }
+  div#left {
+  width: 300px;
+  height: 600px;
+  float: left;
+  }
+  div#graph {
+  float: left;
+  overflow: hidden;
+  }
+  button {
+    background-color: cyan;
+    border: none;
+    color: black;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    width: 200px;
+  }
+  label#result {
+  color: green;
+  font-size: 32px;
+  }
+</style>
+</head>
+<body>
+<div>
+<div id="left">
+<label>From:</label><input type="text" id="source" /><br />
+<label>To:</label><input type="text" id="target" />
+<button id="short" value="0">Shortest Path</button><br />
+<button id="quick" value="1">Quickest Path</button><br />
+<label id="result"></label>
+</div>
+<div id="graph"></div>
+</div>
+<script src="dijkstra.js"></script>
+<script src="force.js"></script>
+<script>
+document.getElementById("short").addEventListener("click", findPath);
+document.getElementById("quick").addEventListener("click", findPath);
+
+function findPath() {
+    var type = parseInt(this.value);
+    var source = parseInt(document.getElementById("source").value);
+    var target = parseInt(document.getElementById("target").value);
+    var path = getPath(source, target, type);
+    
+    //Reset colors
+    for(var i=0; i < edges[0].length; i++){
+    	edges[0][i].style.stroke = "brown";
+    }
+    
+    //Highlight path
+    for(var i=0; i < path.length-1; i++){
+    	for(var j=0; j < edges[0].length; j++){
+    		if(edges[0][j]["__data__"].source.index == path[i] && edges[0][j]["__data__"].target.index == path[i+1]){
+    			edges[0][j].style.stroke = "green";
+    		}	
+    	}
+    }
+    if(type == 0)
+    	document.getElementById("result").innerHTML = "Distance = "+best[target];
+    else if(type == 1)
+    	document.getElementById("result").innerHTML = "Time = "+best[target].toFixed(3);
+}
+
+</script>
+</body>
+</html>

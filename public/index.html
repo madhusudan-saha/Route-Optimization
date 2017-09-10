@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Shortest Path</title>
+<script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+<style>
+  div {
+  overflow: hidden;
+  }
+  div#left {
+  width: 300px;
+  height: 600px;
+  float: left;
+  padding-top: 150px;
+  }
+  div#graph {
+  float: left;
+  overflow: hidden;
+  }
+  button {
+  background-color: cyan;
+  border: none;
+  color: black;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+  width: 200px;
+  }
+  label#result {
+  color: green;
+  font-size: 32px;
+  }
+</style>
+</head>
+<body>
+  <div>
+<div id="left">
+<button id="short" value="0">Shortest Path</button><br />
+<button id="quick" value="1">Quickest Path</button><br />
+<label id="result"></label>
+</div>
+<div id="graph"></div>
+</div>
+<script src="dijkstra.js"></script>
+<script src="force.js"></script>
+<script src="path.js"></script>
+</body>
+</html>

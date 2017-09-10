@@ -1,0 +1,7 @@
+To run use command:
+
+node app.js
+inside the ck-12 directory
+Open localhost:3000
+
+To select source and destination click on the nodes. 

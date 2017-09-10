@@ -1,0 +1,135 @@
+var input = {
+  "S": {
+    "T": [
+      5,
+      7
+    ],
+    "X": [
+      4,
+      4
+    ]
+  },
+  "T": {
+    "X": [
+      3,
+      1
+    ],
+    "V": [
+      5,
+      2
+    ]
+  },
+  "U": {
+    "S": [
+      7,
+      2
+    ],
+    "T": [
+      4,
+      6
+    ]
+  },
+  "V": {
+    "U": [
+      4,
+      5
+    ]
+  },
+  "X": {
+    "V": [
+      2,
+      1
+    ],
+    "W": [
+      5,
+      3
+    ]
+  },
+  "W": {
+    "U": [
+      7,
+      5
+    ],
+    "S": [
+      8,
+      3
+    ]
+  }
+};
+
+var max = 99999999;
+var distance = new Array(6);
+var time = new Array(6);
+var best = new Array(6);
+var visited = new Array(6);
+var prev = new Array(6);
+var path = [];
+
+function getGraph(){
+    for (var i = 0; i < 6; i++) {
+	distance[i] = new Array(6);
+	time[i] = new Array(6);
+    }
+    var map = {'S': 0, 'T': 1, 'U': 2, 'V': 3, 'X': 4, 'W': 5};
+    for(var i=0; i < 6; i++){
+	for(var j=0; j < 6; j++){
+	    distance[i][j] = time[i][j] = max;
+	}
+    }
+
+    for(var node in input){
+	for(var dest in input[node]){
+	    distance[map[node]][map[dest]] = input[node][dest][1];
+	    time[map[node]][map[dest]] = input[node][dest][1] / input[node][dest][0];
+	}
+    }
+}
+
+function dijkstra(source, type){
+    prev[source] = -1;
+    for(var i=0; i < 6; i++){
+	best[i] = max;
+	visited[i] = 0;
+    }
+
+    best[source] = 0;
+    
+    for(var i=0; i < 6; i++){
+	var min = max;
+	var current = 0;
+	for(var j=0; j < 6; j++){
+	    if(visited[j] == 0 && best[j] < min){
+		current = j;
+		min = best[j];
+	    }
+	}
+	visited[current] = 1;
+	for(var j=0; j < 6; j++){
+	    if(type == 0)
+		if(distance[current][j] < max && best[current] + distance[current][j] < best[j]){
+		    best[j] = best[current] + distance[current][j];
+		    prev[j] = current;
+		}
+	    else if(type == 1)
+		if(time[current][j] < max && best[current] + time[current][j] < best[j]){
+		    best[j] = best[current] + time[current][j];
+		    prev[j] = current;
+		}
+	}
+    }
+}
+
+function getPath(prev, i)
+{
+    if (prev[i] == -1)
+        return;
+
+    getPath(prev, prev[i]);
+    
+    path.push(i);
+}
+
+getGraph();
+dijkstra(0, 0);
+getPath(prev, 2);
+console.log(path);
